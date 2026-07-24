@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공급망 ESG 상생협력 지원 포털</title>
+    <!-- Tailwind CSS 및 FontAwesome 아이콘 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google 웹폰트 (Pretendard) -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <!-- SheetJS 라이브러리 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: #f8fafc;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- 상단 네비게이션 바 -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-sky-600 p-2 rounded-lg text-white">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-lg tracking-wide block">ESG WIN-WIN PORTAL</span>
+                        <span class="text-xs text-sky-400 font-medium">공급망 ESG 상생협력 보안 조회 포털</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <nav class="hidden md:flex gap-6 text-sm font-medium">
+                        <a href="#" onclick="switchTab('search')" id="nav-search" class="text-sky-400 hover:text-white transition">협력사 포털 조회</a>
+                        <a href="#" onclick="switchTab('admin')" id="nav-admin" class="text-slate-300 hover:text-white transition">마스터 데이터베이스 (관리자)</a>
+                    </nav>
+                    <span class="bg-slate-800 text-slate-300 text-xs px-2.5 py-1 rounded-full border border-slate-700 hidden sm:inline-block">
+                        <i class="fa-solid fa-lock text-sky-400 mr-1 text-[10px]"></i> 이중 교차 인증 보안 활성화
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= [TAB 1] 협력사 포털 조회 화면 ================= -->
+        <div id="tab-search" class="space-y-8">
+            <!-- 안내 배너 -->
+            <div class="bg-gradient-to-r from-sky-800 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="absolute right-0 top-0 opacity-10 pointer-events-none transform translate-x-12 -translate-y-6">
+                    <i class="fa-solid fa-key text-[240px]"></i>
+                </div>
+                <div class="max-w-full space-y-4">
+                    <span class="bg-sky-500/20 text-sky-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        SECURE SUPPLIER PORTAL
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">협력사 맞춤형 ESG 개선과제 확인</h1>
+                    <p class="text-slate-300 leading-relaxed text-sm sm:text-base whitespace-nowrap overflow-x-auto">
+                        정보 보안 및 타사 데이터 노출 방지를 위해 사업자등록번호와 업체코드를 동시에 올바르게 입력하셔야 이행 대시보드 조회가 가능합니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2025년 공급망 ESG 평가 종합 결과 대시보드 섹션 (배너 하단 약 0.5cm 여백 mt-5 적용) -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6 mt-5">
+                <div class="border-b border-slate-100 pb-4">
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                        <h2 class="text-base font-bold text-slate-950 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-sky-600"></i> 2025 공급망 ESG 종합 성과 분석
+                        </h2>
+                        <span class="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-sky-200 shrink-0">
+                            <i class="fa-solid fa-circle-check mr-1"></i> +5.7점 상회
+                        </span>
+                    </div>
+                    
+                    <!-- 요약 카드 블록 -->
+                    <div class="text-xs">
+                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/70 flex items-start gap-2.5">
+                            <span class="bg-sky-100 text-sky-700 w-6 h-6 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-bullseye text-xs"></i>
+                            </span>
+                            <div class="space-y-0.5">
+                                <span class="font-bold text-slate-800 block">진단 개요 및 범위</span>
+                                <p class="text-slate-600 leading-normal">
+                                    2025년 공급망 내 인권·환경·윤리 및 지배구조 부문의 잠재적·실질적 리스크에 선제적으로 대응하고자, <strong class="text-slate-800">제3자 전문기관</strong>과 함께 <strong class="text-slate-800">1차 핵심 파트너사</strong>를 대상으로 ESG 진단 평가를 실시하였습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                    <!-- 카드 0: 25년 종합 평균 -->
+                    <div class="bg-sky-50/80 rounded-xl p-3.5 sm:p-4 border border-sky-200 flex flex-col justify-between space-y-4 shadow-sm">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[11px] sm:text-xs font-extrabold text-sky-950 flex items-center gap-1.5 whitespace-nowrap">
+                                <i class="fa-solid fa-chart-pie text-sky-600 shrink-0"></i> 25년 종합 평균
+                            </span>
+                            <span class="bg-sky-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap shrink-0">
+                                Gap +5.7
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">벤치마크</span>
+                                <span class="font-bold text-slate-600">45.8점</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-slate-400 h-1.5 rounded-full" style="width: 45.8%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs pt-1">
+                                <span class="text-sky-900 font-black">코웨이 공급망</span>
+                                <span class="font-black text-sky-700">51.5점</span>
+                            </div>
+                            <div class="w-full bg-sky-200 h-2 rounded-full overflow-hidden">
+                                <div class="bg-sky-600 h-2 rounded-full" style="width: 51.5%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 카드 1: 인권 및 노동 -->
+                    <div class="bg-slate-50/50 rounded-xl p-3.5 sm:p-4 border border-slate-200 flex flex-col justify-between space-y-4">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[11px] sm:text-xs font-bold text-slate-600 flex items-center gap-1.5 whitespace-nowrap">
+                                <i class="fa-solid fa-users text-sky-600 shrink-0"></i> 인권 및 노동
+                            </span>
+                            <span class="bg-sky-50 text-sky-700 text-[10px] font-black px-1.5 py-0.5 rounded border border-sky-200 whitespace-nowrap shrink-0">
+                                Gap +8.8
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">벤치마크</span>
+                                <span class="font-bold text-slate-600">59.2점</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-slate-400 h-1.5 rounded-full" style="width: 59.2%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs pt-1">
+                                <span class="text-sky-800 font-extrabold">코웨이 공급망</span>
+                                <span class="font-black text-sky-700">68.0점</span>
+                            </div>
+                            <div class="w-full bg-sky-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-sky-600 h-2 rounded-full" style="width: 68%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 카드 2: 환경 -->
+                    <div class="bg-slate-50/50 rounded-xl p-3.5 sm:p-4 border border-slate-200 flex flex-col justify-between space-y-4">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[11px] sm:text-xs font-bold text-slate-600 flex items-center gap-1.5 whitespace-nowrap">
+                                <i class="fa-solid fa-leaf text-sky-600 shrink-0"></i> 환경
+                            </span>
+                            <span class="bg-sky-50 text-sky-700 text-[10px] font-black px-1.5 py-0.5 rounded border border-sky-200 whitespace-nowrap shrink-0">
+                                Gap +4.1
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">벤치마크</span>
+                                <span class="font-bold text-slate-600">39.4점</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-slate-400 h-1.5 rounded-full" style="width: 39.4%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs pt-1">
+                                <span class="text-sky-800 font-extrabold">코웨이 공급망</span>
+                                <span class="font-black text-sky-700">43.5점</span>
+                            </div>
+                            <div class="w-full bg-sky-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-sky-600 h-2 rounded-full" style="width: 43.5%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 카드 3: 윤리 및 지배구조 -->
+                    <div class="bg-slate-50/50 rounded-xl p-3.5 sm:p-4 border border-slate-200 flex flex-col justify-between space-y-4">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[11px] sm:text-xs font-bold text-slate-600 flex items-center gap-1 whitespace-nowrap">
+                                <i class="fa-solid fa-scale-balanced text-sky-600 shrink-0"></i> 윤리 및 지배구조
+                            </span>
+                            <span class="bg-sky-50 text-sky-700 text-[10px] font-black px-1.5 py-0.5 rounded border border-sky-200 whitespace-nowrap shrink-0">
+                                Gap +9.4
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">벤치마크</span>
+                                <span class="font-bold text-slate-600">40.2점</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-slate-400 h-1.5 rounded-full" style="width: 40.2%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs pt-1">
+                                <span class="text-sky-800 font-extrabold">코웨이 공급망</span>
+                                <span class="font-black text-sky-700">49.6점</span>
+                            </div>
+                            <div class="w-full bg-sky-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-sky-600 h-2 rounded-full" style="width: 49.6%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 카드 4: 제품 및 서비스 책임 -->
+                    <div class="bg-slate-50/50 rounded-xl p-3.5 sm:p-4 border border-slate-200 flex flex-col justify-between space-y-4">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[11px] sm:text-xs font-bold text-slate-600 flex items-center gap-1 whitespace-nowrap">
+                                <i class="fa-solid fa-box-archive text-sky-600 shrink-0"></i> 제품 및 서비스 책임
+                            </span>
+                            <span class="bg-sky-50 text-sky-700 text-[10px] font-black px-1.5 py-0.5 rounded border border-sky-200 whitespace-nowrap shrink-0">
+                                Gap +4.6
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">벤치마크</span>
+                                <span class="font-bold text-slate-600">37.5점</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-slate-400 h-1.5 rounded-full" style="width: 37.5%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs pt-1">
+                                <span class="text-sky-800 font-extrabold">코웨이 공급망</span>
+                                <span class="font-black text-sky-700">42.1점</span>
+                            </div>
+                            <div class="w-full bg-sky-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-sky-600 h-2 rounded-full" style="width: 42.1%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 검색 & 조회 조작 패널 (1cm 여백 mt-10) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
+                <!-- 좌측 검색 제어 카드 -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-5 h-fit">
+                    <div class="border-b border-slate-100 pb-4">
+                        <h2 class="text-md font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-check text-sky-600"></i> 이중 인증 정보 입력
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">기업명, 사업자번호 또는 업체코드로 간편 조회가 가능합니다.</p>
+                    </div>
+
+                    <!-- 입력 1: 사업자등록번호 / 기업명 -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-700 block flex items-center gap-1">
+                            <i class="fa-solid fa-briefcase text-slate-400"></i> 사업자등록번호 또는 기업명
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                                <i class="fa-solid fa-building text-sm"></i>
+                            </span>
+                            <input type="text" id="search-brn" onkeyup="handleEnter(event)" placeholder="사업자번호 또는 기업명 입력" class="w-full pl-9 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm">
+                        </div>
+                    </div>
+
+                    <!-- 입력 2: 업체코드 -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-700 block flex items-center gap-1">
+                            <i class="fa-solid fa-barcode text-slate-400"></i> 업체코드
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                                <i class="fa-solid fa-lock-keyhole text-sm"></i>
+                            </span>
+                            <input type="text" id="search-code" onkeyup="handleEnter(event)" placeholder="등록된 업체코드 입력" class="w-full pl-9 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm">
+                        </div>
+                    </div>
+
+                    <button onclick="executeSecureSearch()" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-lg transition shadow-md hover:shadow-lg flex items-center justify-center gap-2 mt-2">
+                        보안 인증 및 조회 <i class="fa-solid fa-unlock-keyhole"></i>
+                    </button>
+                </div>
+
+                <!-- 우측 결과 대시보드 카드 -->
+                <div class="col-span-1 lg:col-span-2 space-y-6">
+                    <!-- 대시보드 로딩 전 상태 -->
+                    <div id="results-empty-state" class="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center flex flex-col items-center justify-center min-h-[450px]">
+                        <div class="bg-slate-100 text-slate-400 w-20 h-20 rounded-full flex items-center justify-center text-3xl mb-4">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800">보안 인증 대기 중</h3>
+                        <p class="text-sm text-slate-500 mt-2 max-w-sm">
+                            좌측 입력창에 자사의 <strong class="text-slate-700">기업명/사업자등록번호</strong>와 <strong class="text-slate-700">업체코드</strong>를 입력하신 후 조회 버튼을 누르면 실시간 대시보드가 활성화됩니다.
+                        </p>
+                    </div>
+
+                    <!-- 대시보드 로딩 완료 상태 -->
+                    <div id="results-active-state" class="hidden space-y-6">
+                        <!-- 기업 헤더 및 종합 등급 정보 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2.5">
+                                    <h2 id="view-co-name" class="text-2xl font-extrabold text-slate-900">-</h2>
+                                    <span class="bg-sky-100 text-sky-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-sky-200">
+                                        인증 완료 (협력사)
+                                    </span>
+                                </div>
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500">
+                                    <span><strong class="text-slate-700">사업자번호:</strong> <span id="view-co-brn">-</span></span>
+                                    <span><strong class="text-slate-700">업체코드:</strong> <span id="view-co-code">-</span></span>
+                                </div>
+                            </div>
+                            
+                            <!-- 등급 요약 -->
+                            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                                <div class="bg-slate-900 text-white px-4 py-2.5 rounded-xl border border-slate-800 text-center">
+                                    <span class="text-[10px] text-slate-400 block font-bold">2025 ESG 종합등급</span>
+                                    <span id="view-co-grade" class="text-lg font-black text-sky-400">B등급</span>
+                                </div>
+                                <div class="bg-sky-50 px-4 py-2.5 rounded-xl border border-sky-200 text-center">
+                                    <span class="text-[10px] text-sky-700 block font-bold">평가 총점</span>
+                                    <span id="view-co-total-score" class="text-lg font-black text-sky-800">58.4점</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 상세 ESG 평가 결과 카드 -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-6 space-y-4 shadow-sm">
+                            <h3 class="text-sm font-extrabold text-slate-800 flex items-center justify-between">
+                                <span class="flex items-center gap-1.5 uppercase tracking-wider">
+                                    <i class="fa-solid fa-chart-simple text-sky-600"></i> 영역별 ESG 진단 세부 성과 (AI DB 기준)
+                                </span>
+                                <span class="text-xs text-slate-400 font-normal">* 2025년 제3자 전문기관 진단 수치</span>
+                            </h3>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+                                <!-- 환경 -->
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs font-bold text-slate-600">환경 (E)</span>
+                                        <span id="view-env-grade" class="text-xs font-black bg-sky-100 text-sky-800 px-2 py-0.5 rounded">B등급</span>
+                                    </div>
+                                    <div class="text-xl font-extrabold text-slate-900" id="view-env-score">45.2점</div>
+                                    <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                        <div id="view-env-bar" class="bg-sky-600 h-1.5 rounded-full" style="width: 45.2%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- 인권 및 노동 -->
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs font-bold text-slate-600">인권 및 노동 (S)</span>
+                                        <span id="view-hr-grade" class="text-xs font-black bg-sky-100 text-sky-800 px-2 py-0.5 rounded">A등급</span>
+                                    </div>
+                                    <div class="text-xl font-extrabold text-slate-900" id="view-hr-score">68.0점</div>
+                                    <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                        <div id="view-hr-bar" class="bg-sky-600 h-1.5 rounded-full" style="width: 68.0%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- 윤리 및 지배구조 -->
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs font-bold text-slate-600">윤리 및 지배구조 (G)</span>
+                                        <span id="view-gov-grade" class="text-xs font-black bg-sky-100 text-sky-800 px-2 py-0.5 rounded">B등급</span>
+                                    </div>
+                                    <div class="text-xl font-extrabold text-slate-900" id="view-gov-score">52.1점</div>
+                                    <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                        <div id="view-gov-bar" class="bg-sky-600 h-1.5 rounded-full" style="width: 52.1%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- 제품 및 서비스 책임 -->
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs font-bold text-slate-600">제품 및 서비스 책임</span>
+                                        <span class="text-[10px] font-bold text-slate-400">점수 지표</span>
+                                    </div>
+                                    <div class="text-xl font-extrabold text-slate-900" id="view-prod-score">41.0점</div>
+                                    <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                        <div id="view-prod-bar" class="bg-sky-600 h-1.5 rounded-full" style="width: 41.0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5대 과제 현황 카드 리스트 -->
+                        <div class="space-y-4">
+                            <h3 class="text-sm font-extrabold text-slate-700 flex items-center justify-between">
+                                <span class="flex items-center gap-1.5 uppercase tracking-wider">
+                                    <i class="fa-solid fa-list-check"></i> 5대 ESG 핵심 과제 진행 상태
+                                </span>
+                                <span id="view-target-badge" class="text-xs font-black text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-200">0건 배정</span>
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="task-cards-container">
+                                <!-- JS 동적 생성 -->
+                            </div>
+                        </div>
+
+                        <!-- 25-26년 공급망 ESG 개선과제 이행 계획 수립 및 이행 과제 제출 섹션 -->
+                        <div class="bg-white rounded-xl border border-slate-200 p-6 space-y-4 shadow-sm mt-6">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="space-y-1">
+                                    <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                                        <i class="fa-solid fa-pen-to-square text-sky-600"></i> 25-26년 공급망 ESG 개선과제 이행 계획 수립 및 이행 과제 제출
+                                    </h3>
+                                    <p class="text-xs text-slate-500">
+                                        2025~2026년 공급망 ESG 개선과제의 효율적인 이행, 세부 추진 계획 작성 및 과제 제출을 위해 구글 설문지에 접속하여 답변 작성 및 서류 제출을 완료해 주시기 바랍니다.
+                                    </p>
+                                </div>
+                                <a href="https://forms.gle/gvueM6jWx7KM413U9" target="_blank" rel="noopener noreferrer" onclick="showToast('구글 설문지 이동', '25-26년 공급망 ESG 개선과제 이행 계획 수립 및 이행 과제 제출 설문 페이지로 이동합니다.', true)" class="inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold px-5 py-3 rounded-xl transition shadow-sm hover:shadow-md shrink-0">
+                                    <i class="fa-solid fa-square-poll-vertical text-sm"></i> 구글설문지 바로가기 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= [TAB 2] 마스터 데이터베이스 (관리자용 전체 목록) ================= -->
+        <div id="tab-admin" class="space-y-6 hidden">
+            <!-- 관리자 미인증 시 노출되는 비밀번호 입력 폼 -->
+            <div id="admin-login-card" class="max-w-md mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 p-8 space-y-6 my-12">
+                <div class="text-center space-y-2">
+                    <div class="bg-slate-950 text-sky-400 w-16 h-16 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
+                        <i class="fa-solid fa-lock-open-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-900 tracking-tight">관리자 권한 인증</h3>
+                    <p class="text-xs text-slate-500 leading-normal">마스터 데이터베이스 열람을 위한 아이디와 패스워드를 입력해주십시오.</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- ID 입력창 -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-extrabold text-slate-700 block">관리자 ID</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
+                                <i class="fa-solid fa-user-gear"></i>
+                            </span>
+                            <input type="text" id="admin-id-input" onkeyup="handleAdminEnter(event)" placeholder="관리자 ID 입력" class="w-full pl-8 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 text-sm">
+                        </div>
+                    </div>
+                    <!-- PW 입력창 -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-extrabold text-slate-700 block">비밀번호</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
+                                <i class="fa-solid fa-key"></i>
+                            </span>
+                            <input type="password" id="admin-pw-input" onkeyup="handleAdminEnter(event)" placeholder="비밀번호 입력" class="w-full pl-8 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="admin-error-msg" class="text-xs font-bold text-rose-600 hidden text-center">
+                    <i class="fa-solid fa-circle-exclamation"></i> 입력한 인증정보가 일치하지 않습니다.
+                </div>
+
+                <button onclick="executeAdminAuth()" class="w-full bg-slate-950 hover:bg-slate-800 text-white font-extrabold py-3 px-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    보안 데이터 액세스 <i class="fa-solid fa-fingerprint"></i>
+                </button>
+            </div>
+
+            <!-- 관리자 로그인 인증 성공 시 노출되는 데이터베이스 영역 -->
+            <div id="admin-database-view" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-database text-slate-700"></i> 공급망 ESG 이행 마스터 데이터베이스
+                            </h2>
+                            <span class="bg-sky-100 text-sky-800 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-sky-200">
+                                인증 완료
+                            </span>
+                        </div>
+                        <p class="text-sm text-slate-500 mt-1">협력사 35개사의 데이터 및 매핑 테이블 세트입니다.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input type="text" id="admin-search-input" onkeyup="searchAdminTable()" placeholder="기업명 / 코드 검색" class="pl-8 pr-4 py-2 border rounded-lg text-xs w-48 sm:w-64 focus:outline-none focus:ring-1 focus:ring-sky-500">
+                        </div>
+                        <button onclick="logoutAdmin()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs px-3 py-2 rounded-lg border border-rose-200 transition shrink-0 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> 잠금 세션종료
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 관리자 테이블 -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-900 text-white text-xs font-semibold">
+                                <th class="p-3.5 border-r border-slate-800 text-center">NO.</th>
+                                <th class="p-3.5 border-r border-slate-800">기업명</th>
+                                <th class="p-3.5 border-r border-slate-800">사업자등록번호</th>
+                                <th class="p-3.5 border-r border-slate-800 text-center">업체코드</th>
+                                <th class="p-3.5 border-r border-slate-800 text-center">종합등급</th>
+                                <th class="p-3.5 border-r border-slate-800 text-center">과제1 (Scope 1)</th>
+                                <th class="p-3.5 border-r border-slate-800 text-center">과제2 (Scope 2)</th>
+                                <th class="p-3.5 border-r border-slate-800 text-center">과제3 (신분증 자가보관)</th>
+                                <th class="p-3.5 border-r border-slate-800 text-center">과제4 (모국어 계약서)</th>
+                                <th class="p-3.5 text-center">과제5 (모국어 급여명세서)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-slate-200 text-xs">
+                            <!-- JS 자동 채움 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= 세부 개선 가이드 모달 ================= -->
+    <div id="guide-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] shadow-2xl flex flex-col overflow-hidden border border-slate-100">
+            <!-- 모달 헤더 -->
+            <div class="bg-slate-900 text-white p-6 flex justify-between items-start">
+                <div class="space-y-1">
+                    <span id="modal-task-badge" class="bg-sky-500 text-white text-[10px] font-black tracking-widest uppercase px-2.5 py-0.5 rounded-full">TASK 01</span>
+                    <h3 id="modal-task-title" class="text-xl font-bold tracking-tight">과제 타이틀</h3>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 p-2 rounded-lg transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- 모달 컨텐츠 바디 -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-grow">
+                <div class="bg-sky-50/50 rounded-xl p-4 border border-sky-100 flex items-start gap-3">
+                    <span class="bg-sky-500 text-white w-8 h-8 rounded-full flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </span>
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold text-sky-800 block">국내외 가이드라인 및 글로벌 규제/평가</span>
+                        <p id="modal-global-guide" class="text-sm text-slate-700 font-bold">기후공시 / GRI Standards / EU CSDDD / EU CBAM / RBA Code</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb text-amber-500"></i> 과제 선정 배경 및 이행 필수 이유
+                    </h4>
+                    <p id="modal-bg-text" class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        선정 배경 데이터.
+                    </p>
+                </div>
+
+                <!-- 제출 서류 (필수 증빙) 카드 -->
+                <div class="space-y-2">
+                    <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-export text-sky-600"></i> 제출 서류 (필수 증빙)
+                    </h4>
+                    <div class="bg-sky-50/80 p-4 rounded-xl border border-sky-200/80 flex items-start gap-3">
+                        <span class="bg-sky-600 text-white w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                            <i class="fa-solid fa-paperclip"></i>
+                        </span>
+                        <div class="space-y-1">
+                            <span class="text-xs font-extrabold text-sky-900 block">이행 검증을 위한 필수 요구 증빙물</span>
+                            <p id="modal-submit-file-text" class="text-xs sm:text-sm text-slate-800 font-bold leading-normal">
+                                제출 서류 데이터
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-check text-sky-600"></i> 단계별 실천 프로세스 (Action Item)
+                    </h4>
+                    <div id="modal-action-items" class="text-sm text-slate-600 space-y-2 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <!-- 리스트 -->
+                    </div>
+                </div>
+
+                <!-- 자가진단기 및 가이드 다운로드 영역 -->
+                <div id="modal-download-wrapper" class="pt-4 border-t border-slate-100">
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="space-y-1">
+                            <span class="text-xs font-bold text-slate-500 block" id="modal-download-header">자가진단 도구 다운로드</span>
+                            <span class="text-sm font-extrabold text-slate-800 text-sky-700" id="modal-download-filename">SME_SupplyChain_Carbon_Monthly_v4.xlsx</span>
+                        </div>
+                        <button onclick="downloadMock()" class="text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 px-4 py-2.5 rounded-lg transition inline-flex items-center gap-1.5 shadow shrink-0">
+                            <i id="modal-download-icon" class="fa-solid fa-cloud-arrow-down"></i> <span id="modal-download-btn-text">자가진단기 내려받기</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-4 border-t border-slate-200 flex justify-end">
+                <button onclick="closeModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-bold px-5 py-2.5 rounded-lg transition">
+                    창 닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 토스트 메시지 시스템 -->
+    <div id="custom-toast" class="fixed top-5 right-5 z-[200] transform translate-x-[120%] transition-transform duration-300 max-w-sm w-full bg-slate-900 text-white p-4 rounded-xl shadow-2xl border border-slate-800 flex items-start gap-3">
+        <span id="toast-icon-box" class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm">
+            <i id="toast-icon" class="fa-solid"></i>
+        </span>
+        <div class="space-y-1">
+            <h4 id="toast-title" class="font-bold text-sm">알림 제목</h4>
+            <p id="toast-message" class="text-xs text-slate-400">상세 안내 사항 문구 영역입니다.</p>
+        </div>
+    </div>
+
+    <!-- 하단 푸터 -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-slate-400 text-xs mt-12">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>© 2026 공급망 ESG 상생협력 지원 포털. All Rights Reserved.</p>
+            <p class="text-slate-500">보안성 향상을 위해 사업자등록번호와 업체코드 교차 일치 검증 및 관리자 이중 잠금 로직이 적용되었습니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 전역 상태 변수 선언
+        let currentTab = 'search';
+        let activeSupplier = null;
+        let taskMemoryState = {};
+        let isAdminAuthenticated = false;
+        let selectedTaskIdx = null;
+
+        // 35개 협력사 데이터베이스 원본
+        const dbRecords = [
+            { id: 1, name: "(주)제성", brn: "139-81-18603", code: "100044", grade: "B", score: 58.4, envG: "B", envS: 48.5, hrG: "A", hrS: 68.0, govG: "B", govS: 54.2, prodS: 42.0, t: [true, false, false, false, true] },
+            { id: 2, name: "(주)광산", brn: "124-81-38077", code: "103224", grade: "A", score: 65.2, envG: "B", envS: 52.0, hrG: "S", hrS: 78.5, govG: "A", govS: 62.0, prodS: 49.0, t: [true, false, false, false, false] },
+            { id: 3, name: "(주)세명화이트", brn: "141-81-04742", code: "100098", grade: "S", score: 78.0, envG: "A", envS: 68.0, hrG: "S", hrS: 88.0, govG: "S", govS: 75.0, prodS: 62.0, t: [false, false, false, false, false] },
+            { id: 4, name: "(주)씨앤투스", brn: "610-81-66526", code: "6108166526", grade: "B", score: 54.1, envG: "C", envS: 41.0, hrG: "B", hrS: 62.0, govG: "B", govS: 50.0, prodS: 39.5, t: [true, false, false, false, false] },
+            { id: 5, name: "(주)신우엠텍", brn: "124-81-78021", code: "100081", grade: "C", score: 46.8, envG: "C", envS: 38.0, hrG: "B", hrS: 55.0, govG: "C", govS: 42.0, prodS: 36.0, t: [true, false, false, true, true] },
+            { id: 6, name: "(주)재원정밀", brn: "134-81-84961", code: "100118", grade: "B", score: 52.3, envG: "B", envS: 44.0, hrG: "A", hrS: 64.0, govG: "C", govS: 45.0, prodS: 38.0, t: [true, true, false, false, true] },
+            { id: 7, name: "(주)광명", brn: "124-86-50998", code: "100035", grade: "A", score: 68.5, envG: "A", envS: 58.0, hrG: "S", hrS: 80.0, govG: "A", govS: 65.0, prodS: 52.0, t: [false, false, false, false, false] },
+            { id: 8, name: "(주)은성산업", brn: "138-81-07758", code: "103361", grade: "B", score: 55.0, envG: "B", envS: 46.0, hrG: "A", hrS: 66.0, govG: "B", govS: 49.0, prodS: 41.0, t: [false, false, false, false, true] },
+            { id: 9, name: "케이제이전자(주)", brn: "124-86-74419", code: "100039", grade: "C", score: 48.2, envG: "C", envS: 39.0, hrG: "B", hrS: 58.0, govG: "C", govS: 43.0, prodS: 37.0, t: [false, false, false, false, true] },
+            { id: 10, name: "(주)큐비에스", brn: "139-81-31455", code: "100042", grade: "S", score: 81.2, envG: "S", envS: 72.0, hrG: "S", hrS: 90.0, govG: "S", govS: 78.0, prodS: 65.0, t: [false, false, false, false, false] },
+            { id: 11, name: "(주)한독크린텍", brn: "305-81-66527", code: "100105", grade: "D", score: 39.5, envG: "D", envS: 30.0, hrG: "C", hrS: 48.0, govG: "D", govS: 35.0, prodS: 31.0, t: [true, false, true, false, true] },
+            { id: 12, name: "(주)파라", brn: "129-81-27328", code: "103135", grade: "B", score: 56.4, envG: "B", envS: 47.0, hrG: "A", hrS: 67.0, govG: "B", govS: 51.0, prodS: 42.0, t: [true, false, false, false, true] },
+            { id: 13, name: "(주)유진서비스", brn: "341-86-00185", code: "103874", grade: "C", score: 49.0, envG: "C", envS: 40.0, hrG: "B", hrS: 59.0, govG: "C", govS: 44.0, prodS: 38.0, t: [true, false, false, false, false] },
+            { id: 14, name: "(주)워터온", brn: "128-86-38884", code: "100087", grade: "A", score: 66.8, envG: "A", envS: 56.0, hrG: "A", hrS: 76.0, govG: "A", govS: 63.0, prodS: 50.0, t: [false, false, false, false, false] },
+            { id: 15, name: "(주)아이디시스텍", brn: "122-81-59737", code: "100075", grade: "B", score: 53.7, envG: "C", envS: 42.0, hrG: "B", hrS: 63.0, govG: "B", govS: 48.0, prodS: 40.0, t: [true, false, false, false, true] },
+            { id: 16, name: "(주)포에스텍", brn: "608-81-51092", code: "102097", grade: "C", score: 45.1, envG: "D", envS: 35.0, hrG: "C", hrS: 52.0, govG: "C", govS: 41.0, prodS: 35.0, t: [false, false, false, true, true] },
+            { id: 17, name: "동인하이텍(주)", brn: "609-81-29517", code: "103734", grade: "S", score: 79.5, envG: "S", envS: 70.0, hrG: "S", hrS: 89.0, govG: "S", govS: 76.0, prodS: 63.0, t: [false, false, false, false, false] },
+            { id: 18, name: "알비코리아(주)", brn: "137-81-11263", code: "100068", grade: "C", score: 47.9, envG: "C", envS: 37.0, hrG: "B", hrS: 56.0, govG: "C", govS: 43.0, prodS: 37.0, t: [true, false, false, true, true] },
+            { id: 19, name: "(주)스톰테크", brn: "109-81-59637", code: "100093", grade: "A", score: 67.2, envG: "A", envS: 57.0, hrG: "A", hrS: 77.0, govG: "A", govS: 64.0, prodS: 51.0, t: [false, false, false, false, false] },
+            { id: 20, name: "(주)이앤시스", brn: "175-86-00569", code: "103945", grade: "A", score: 64.0, envG: "B", envS: 51.0, hrG: "A", hrS: 75.0, govG: "A", govS: 61.0, prodS: 48.0, t: [false, false, false, false, false] },
+            { id: 21, name: "(주)플로우웨이", brn: "128-86-55243", code: "103599", grade: "B", score: 57.8, envG: "B", envS: 48.0, hrG: "A", hrS: 69.0, govG: "B", govS: 52.0, prodS: 43.0, t: [false, false, false, false, false] },
+            { id: 22, name: "에코엘이디(주)", brn: "131-81-99602", code: "1318199602", grade: "C", score: 44.5, envG: "D", envS: 34.0, hrG: "C", hrS: 51.0, govG: "C", govS: 40.0, prodS: 34.0, t: [true, false, false, false, false] },
+            { id: 23, name: "(주)파세코", brn: "134-81-05608", code: "101060", grade: "S", score: 82.5, envG: "S", envS: 74.0, hrG: "S", hrS: 92.0, govG: "S", govS: 80.0, prodS: 66.0, t: [false, false, false, false, false] },
+            { id: 24, name: "(주)성우메디텍", brn: "126-81-57880", code: "1268157880", grade: "B", score: 51.9, envG: "C", envS: 41.0, hrG: "A", hrS: 61.0, govG: "C", govS: 46.0, prodS: 38.0, t: [true, false, false, false, false] },
+            { id: 25, name: "(주)비엠비", brn: "126-86-11026", code: "1268611026", grade: "A", score: 69.0, envG: "A", envS: 59.0, hrG: "S", hrS: 81.0, govG: "A", govS: 66.0, prodS: 53.0, t: [false, false, false, false, false] },
+            { id: 26, name: "(주)파워넷", brn: "224-81-07438", code: "103991", grade: "A", score: 63.5, envG: "B", envS: 50.0, hrG: "A", hrS: 74.0, govG: "A", govS: 60.0, prodS: 47.0, t: [false, false, false, false, false] },
+            { id: 27, name: "(주)율도", brn: "140-81-13234", code: "104010", grade: "B", score: 58.1, envG: "B", envS: 49.0, hrG: "A", hrS: 70.0, govG: "B", govS: 53.0, prodS: 42.0, t: [false, false, false, false, false] },
+            { id: 28, name: "비렉스텍(주)", brn: "623-87-02160", code: "6238702160", grade: "C", score: 43.8, envG: "D", envS: 33.0, hrG: "C", hrS: 50.0, govG: "D", govS: 38.0, prodS: 33.0, t: [false, false, false, true, true] },
+            { id: 29, name: "한국아이비엠(주)", brn: "116-81-03897", code: "1168103897", grade: "D", score: 38.0, envG: "D", envS: 28.0, hrG: "D", hrS: 45.0, govG: "D", govS: 34.0, prodS: 30.0, t: [true, false, false, true, true] },
+            { id: 30, name: "테크노전자마산공장", brn: "608-85-25461", code: "104320", grade: "A", score: 65.9, envG: "B", envS: 53.0, hrG: "A", hrS: 77.0, govG: "A", govS: 62.0, prodS: 49.0, t: [false, false, false, false, false] },
+            { id: 31, name: "메가존(주)", brn: "214-86-79342", code: "1101112195132", grade: "C", score: 46.2, envG: "C", envS: 36.0, hrG: "B", hrS: 54.0, govG: "C", govS: 42.0, prodS: 36.0, t: [false, false, false, true, false] },
+            { id: 32, name: "지에스네오텍(주)", brn: "113-81-07384", code: "1138107384", grade: "B", score: 50.5, envG: "C", envS: 40.0, hrG: "A", hrS: 60.0, govG: "C", govS: 45.0, prodS: 37.0, t: [true, false, false, false, false] },
+            { id: 33, name: "오비오(주)", brn: "214-86-20915", code: "104060", grade: "S", score: 80.0, envG: "S", envS: 71.0, hrG: "S", hrS: 89.0, govG: "S", govS: 77.0, prodS: 64.0, t: [false, false, false, false, false] },
+            { id: 34, name: "(주)삼운전자", brn: "134-86-66750", code: "100032", grade: "C", score: 47.0, envG: "C", envS: 37.0, hrG: "B", hrS: 55.0, govG: "C", govS: 42.0, prodS: 36.0, t: [true, false, false, false, true] },
+            { id: 35, name: "(주)태온물류", brn: "126-81-94736", code: "1268194736", grade: "B", score: 52.8, envG: "C", envS: 43.0, hrG: "A", hrS: 62.0, govG: "B", govS: 47.0, prodS: 39.0, t: [true, false, false, false, false] }
+        ];
+
+        // 5대 핵심 과제 정의
+        const taskDetails = {
+            1: {
+                title: "Scope 1 직접 온실가스 배출량 산정",
+                guide: "기후공시 (ISSB/IFRS S2) / EU CBAM / K-ESG 가이드라인 / GHG Protocol / GRI 305-1",
+                bg: "글로벌 탄소공시 및 기후공시 의무화, 원청사 탄소중립 선언에 발맞추어, 협력사가 자체적으로 소유 및 관리하는 연료 연소원(법인 차량, 가스 보일러, 공장 발전기 등)의 정량 배출 데이터 구축은 탄소 장벽 대응을 위한 가장 첫 단계 지표로 선정되었습니다.",
+                submitFile: "'협력사 맞춤형 ESG 개선과제 확인' 사이트 내 첨부 파일 다운로드 '2025년 Scope 1 온실가스 측정 데이터' 업로드",
+                actions: [
+                    "공장 내 모든 연료 사용 시설물(도시가스, 휘발유/경유 저장고 등)의 월별 지출 영수증 및 고지서 보관 내역 수집",
+                    "배출 시설 정보 목록(보일러 사양, 법인차량 차종 및 연식) 전수 파악",
+                    "플랫폼에서 무상 제공하는 탄소배출량 자동 계산 표준 엑셀 템플릿 내려받기",
+                    "연간 에너지 사용량 정보를 정합성에 맞게 기입한 후 작성 완료된 서식을 첨부하여 증빙 승인 대기"
+                ],
+                file: "SME_SupplyChain_Carbon_Monthly_v4.xlsx"
+            },
+            2: {
+                title: "Scope 2 간접 온실가스 배출량 산정",
+                guide: "기후공시 (ISSB/IFRS S2) / EU CBAM / K-ESG 가이드라인 / GHG Protocol / GRI 305-2",
+                bg: "제조업 협력사의 총 온실가스 배출 비중에서 가장 큰 부분(일반적으로 80% 이상)을 차지하는 요인은 공장 전력 소비량입니다. 국가 온실가스 감축 목표 달성과 원청사는 Scope 3 감사 규격을 통과하기 위해 필수적으로 집계되어야 합니다.",
+                submitFile: "'협력사 맞춤형 ESG 개선과제 확인' 사이트 내 첨부 파일 다운로드 '2025년 Scope 2 온실가스 측정 데이터' 업로드",
+                actions: [
+                    "한국전력(KEPCO) 사이버지점에서 공장 계량기별 월별 전기요금 청구 데이터 및 사용량(kWh) 12개월분 확인",
+                    "자가 소비용 태양광 발전 시설이 가동 중인 경우, 자체 소비 전력량 및 전력 매칭 영수증 증빙 확인",
+                    "배출량 가중 산식을 통해 전력량 사용 대비 탄소 환산값 산출 실행",
+                    "한국전력 전력 청구서 12개월분 팩스 사본 또는 통합 PDF 바인더 일괄 첨부 및 보고 완료"
+                ],
+                file: "SME_SupplyChain_Carbon_Monthly_v4.xlsx"
+            },
+            3: {
+                title: "외국인 근로자 신분증·여권 자가보관 준수",
+                guide: "EU CSDDD (공급망 실사지침) / ILO 핵심협약 C029 / RBA Code 7.0",
+                bg: "외국인 근로자의 이탈 예방이나 신원 보증 등의 이유로 고용주가 여권이나 국가 신분증 원본을 금고 등에 보관하는 행위는 글로벌 최고 의결 단체에서 '강제 노동(Forced Labor)'의 핵심 징후로 식별합니다. 적발 시 공급망에서 영구 배제되는 Zero Tolerance 조항으로, 철저한 전면 준수가 요구됩니다.",
+                submitFile: "국문-모국어 대조 '자가보관 확인 서약서' 작성 서명 본 샘플 (개인정보 마스킹처리)",
+                actions: [
+                    "기존 보관 중이던 모든 외국인 근로자의 여권 및 원본 신분 서류를 즉시 본인 소유로 완전 이관",
+                    "기숙사 또는 작업장 구역 내 분실 예방을 위해 잠금장치가 탑재된 개인용 락커/사물함을 무상 제공 및 실사",
+                    "이주 근로자가 본인의 신분 서류를 안전하게 직접 소지하고 있음을 확인하는 국문-모국어 대조 '자가보관 확인 서약서' 작성 서명",
+                    "사인 완료된 확인서 스캔본과 개인 사물함 비치 사진을 첨부하여 실태 평가 증명 제출"
+                ],
+                file: "외국인_신분증_자가보관_가이드라인.pdf"
+            },
+            4: {
+                title: "외국인 근로자 모국어 표준 근로계약서 교부",
+                guide: "EU CSDDD (공급망 실사지침) / ILO C143 / RBA 인권규범 A.1조",
+                bg: "이해할 수 없는 한글 근로계약서의 기만적 사인이나 기속은 계약조건 미달 분쟁을 부르고, 공급망 실사에서 '근무 자발성 결여' 리스크로 감점 조치됩니다. 근로자가 본국 출발 전 이해할 수 있는 언어로 명문화된 서식 작성과 영수 수령이 필수입니다.",
+                submitFile: "근로자 친필 서명이 표기된 다국어 근로계약 교부증 샘플 (개인정보 마스킹처리)",
+                actions: [
+                    "당사에 등록된 외국인 근로자들의 다국적 국적 분포 현황 점검",
+                    "기존의 표준 근로계약 내 기재된 법정 기숙사비 공제, 연장 가산수당 수식 등이 다국어로 대조 번역되었는지 전수 감사",
+                    "당사 표준 다국어 근로계약서 양식(베트남어, 네팔어, 태국어 등 제공) 다운로드 및 채용 계약 체결 시 교부",
+                    "근로자 친필 서명이 표기된 다국어 근로계약 교부증 및 수령서 스캔 서류 첨부 제출"
+                ],
+                file: "외국인_모국어_근로계약서_가이드라인.pdf"
+            },
+            5: {
+                title: "외국인 근로자 모국어 급여명세서 발급",
+                guide: "EU CSDDD (공급망 실사지침) / 근로기준법 제48조 / ILO C095",
+                bg: "기본급, 각종 잔업수당 산식, 기숙사/식대 공제 정산 실무 과정에서 설명이 부재하면 부당 갈취 등의 분쟁 및 실사 불합격 통지를 받게 됩니다. 노동 제공 대비 지급액의 산출 근거를 투명하게 외국어로 통지하도록 요구됩니다.",
+                submitFile: "모국어 급여 통지 상세서 발부 샘플 (개인정보 마스킹처리)",
+                actions: [
+                    "지급된 임금 계산의 구성 세부항목이 모국어로 정확히 설명되어 있는지 점검",
+                    "공식 제공 중인 국가별 다국어 급여명세서(페이슬립) 표준 수식 엑셀 서식 확보",
+                    "수당 가산 내역과 정산 내역을 기입하여 근로자 배포 체계 마련",
+                    "실제 외국인 근로자에게 인쇄물 또는 이메일로 발행한 모국어 급여 통지 상세서 발부 샘플 사본 첨부 제출"
+                ],
+                file: "외국인_모국어_급여명세서_가이드라인.pdf"
+            }
+        };
+
+        // 토스트 메시지 출력 함수
+        function showToast(title, message, isSuccess = true) {
+            const toast = document.getElementById('custom-toast');
+            const iconBox = document.getElementById('toast-icon-box');
+            const icon = document.getElementById('toast-icon');
+            const tTitle = document.getElementById('toast-title');
+            const tMsg = document.getElementById('toast-message');
+
+            tTitle.innerText = title;
+            tMsg.innerText = message;
+
+            if (isSuccess) {
+                iconBox.className = "w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm bg-sky-500/15 text-sky-500 border border-sky-500/25";
+                icon.className = "fa-solid fa-circle-check";
+            } else {
+                iconBox.className = "w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm bg-rose-500/15 text-rose-500 border border-rose-500/25";
+                icon.className = "fa-solid fa-shield-exclamation";
+            }
+
+            toast.style.transform = 'translateX(0)';
+            setTimeout(() => {
+                toast.style.transform = 'translateX(120%)';
+            }, 3000);
+        }
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.getElementById('tab-search').classList.toggle('hidden', tabId !== 'search');
+            document.getElementById('tab-admin').classList.toggle('hidden', tabId !== 'admin');
+
+            const navSearch = document.getElementById('nav-search');
+            const navAdmin = document.getElementById('nav-admin');
+
+            if (tabId === 'search') {
+                navSearch.className = "text-sky-400 hover:text-white transition font-bold";
+                navAdmin.className = "text-slate-300 hover:text-white transition";
+            } else {
+                navSearch.className = "text-slate-300 hover:text-white transition";
+                navAdmin.className = "text-sky-400 hover:text-white transition font-bold";
+                renderAdminTabState();
+            }
+        }
+
+        function renderAdminTabState() {
+            const loginCard = document.getElementById('admin-login-card');
+            const databaseView = document.getElementById('admin-database-view');
+
+            if (isAdminAuthenticated) {
+                loginCard.classList.add('hidden');
+                databaseView.classList.remove('hidden');
+                renderAdminTable();
+            } else {
+                loginCard.classList.remove('hidden');
+                databaseView.classList.add('hidden');
+                document.getElementById('admin-error-msg').classList.add('hidden');
+                document.getElementById('admin-id-input').value = '';
+                document.getElementById('admin-pw-input').value = '';
+            }
+        }
+
+        function executeAdminAuth() {
+            const adminId = document.getElementById('admin-id-input').value.trim();
+            const adminPw = document.getElementById('admin-pw-input').value.trim();
+            const errorMsg = document.getElementById('admin-error-msg');
+
+            if (adminId === "20018238" && adminPw === "20018238") {
+                isAdminAuthenticated = true;
+                errorMsg.classList.add('hidden');
+                showToast('관리자 인증 완료', '마스터 데이터베이스 액세스가 승인되었습니다.', true);
+                renderAdminTabState();
+            } else {
+                isAdminAuthenticated = false;
+                errorMsg.classList.remove('hidden');
+                showToast('인증 실패', 'ID 또는 비밀번호가 잘못 입력되었습니다.', false);
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminAuthenticated = false;
+            showToast('세션 종료', '관리자 세션이 정상적으로 잠금 처리되었습니다.', true);
+            renderAdminTabState();
+        }
+
+        function handleAdminEnter(event) {
+            if (event.key === 'Enter') executeAdminAuth();
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') executeSecureSearch();
+        }
+
+        function fillSample(brn, code) {
+            document.getElementById('search-brn').value = brn;
+            document.getElementById('search-code').value = code;
+            executeSecureSearch();
+        }
+
+        function executeSecureSearch() {
+            const rawBrn = document.getElementById('search-brn').value.trim().replace(/[-\s]/g, '');
+            const rawCode = document.getElementById('search-code').value.trim().replace(/[-\s]/g, '');
+
+            if (!rawBrn && !rawCode) {
+                showToast('입력 누락', '보안 조회를 위해 기업명, 사업자번호 또는 업체코드를 입력해 주십시오.', false);
+                return;
+            }
+
+            // 기업명, 사업자번호, 업체코드 다각도 유연 스마트 매칭 (비렉스텍/비렉스테크 등 오타 및 유사어 완화)
+            const match = dbRecords.find(item => {
+                const cleanBrn = item.brn.replace(/[-\s]/g, '');
+                const cleanCode = item.code.replace(/[-\s]/g, '');
+                const cleanName = item.name.replace(/[\s\(\)주]/g, '').toLowerCase();
+
+                const qBrn = rawBrn.toLowerCase().replace(/[\s\(\)주]/g, '');
+                const qCode = rawCode.toLowerCase().replace(/[\s\(\)주]/g, '');
+
+                if (rawBrn && rawCode) {
+                    return (cleanBrn === rawBrn && cleanCode === rawCode) ||
+                           (cleanName.includes(qBrn) && cleanCode === rawCode) ||
+                           (cleanName.includes(qBrn) || cleanBrn === rawBrn);
+                }
+                
+                if (rawBrn) {
+                    return cleanBrn === rawBrn || cleanCode === rawBrn || cleanName.includes(qBrn) || qBrn.includes(cleanName.substring(0, 3));
+                }
+
+                if (rawCode) {
+                    return cleanBrn === rawCode || cleanCode === rawCode || cleanName.includes(qCode);
+                }
+
+                return false;
+            });
+
+            const emptyState = document.getElementById('results-empty-state');
+            const activeState = document.getElementById('results-active-state');
+
+            if (!match) {
+                emptyState.style.display = 'flex';
+                activeState.style.display = 'none';
+                emptyState.innerHTML = `
+                    <div class="bg-red-50 text-red-500 w-16 h-16 rounded-full flex items-center justify-center text-2xl mb-4 border border-red-200">
+                        <i class="fa-solid fa-shield-exclamation"></i>
+                    </div>
+                    <h3 class="text-md font-bold text-red-600">조회 결과 없음</h3>
+                    <p class="text-xs text-slate-500 mt-2 max-w-sm leading-relaxed">
+                        입력하신 정보와 일치하는 협력사 데이터를 찾지 못했습니다. <br>기업명, 사업자번호 또는 업체코드를 다시 확인해 주십시오.
+                    </p>
+                `;
+                showToast('조회 실패', '입력하신 교차 보안코드가 일치하지 않습니다.', false);
+                return;
+            }
+
+            // 검색어 자동 보정 채움
+            document.getElementById('search-brn').value = match.brn;
+            document.getElementById('search-code').value = match.code;
+
+            activeSupplier = match;
+            if (!taskMemoryState[match.id]) {
+                taskMemoryState[match.id] = [...match.t];
+            }
+
+            emptyState.style.display = 'none';
+            activeState.classList.remove('hidden');
+
+            document.getElementById('view-co-name').innerText = match.name;
+            document.getElementById('view-co-brn').innerText = match.brn;
+            document.getElementById('view-co-code').innerText = match.code;
+            
+            // 종합 등급 및 총점 매핑
+            document.getElementById('view-co-grade').innerText = `${match.grade}등급`;
+            document.getElementById('view-co-total-score').innerText = `${match.score}점`;
+
+            // 세부 영역 매핑
+            document.getElementById('view-env-grade').innerText = `${match.envG}등급`;
+            document.getElementById('view-env-score').innerText = `${match.envS}점`;
+            document.getElementById('view-env-bar').style.width = `${match.envS}%`;
+
+            document.getElementById('view-hr-grade').innerText = `${match.hrG}등급`;
+            document.getElementById('view-hr-score').innerText = `${match.hrS}점`;
+            document.getElementById('view-hr-bar').style.width = `${match.hrS}%`;
+
+            document.getElementById('view-gov-grade').innerText = `${match.govG}등급`;
+            document.getElementById('view-gov-score').innerText = `${match.govS}점`;
+            document.getElementById('view-gov-bar').style.width = `${match.govS}%`;
+
+            document.getElementById('view-prod-score').innerText = `${match.prodS}점`;
+            document.getElementById('view-prod-bar').style.width = `${match.prodS}%`;
+
+            updateTargetBadge();
+            renderTaskCards();
+            showToast('인증 성공', `${match.name}의 실시간 ESG 대시보드가 로드되었습니다.`, true);
+        }
+
+        function updateTargetBadge() {
+            if (!activeSupplier) return;
+            const currentStates = taskMemoryState[activeSupplier.id];
+            const count = currentStates.filter(state => state === true).length;
+            const badge = document.getElementById('view-target-badge');
+
+            if (count > 0) {
+                badge.innerText = `${count}건 배정`;
+                badge.className = "text-xs font-black text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-200";
+            } else {
+                badge.innerText = "이행 완료";
+                badge.className = "text-xs font-black text-sky-600 bg-sky-50 px-2.5 py-1 rounded-lg border border-sky-200";
+            }
+        }
+
+        function renderTaskCards() {
+            const container = document.getElementById('task-cards-container');
+            container.innerHTML = '';
+
+            const currentStates = taskMemoryState[activeSupplier.id];
+            const taskNames = [
+                'Scope 1 직접 온실가스 배출량 산정',
+                'Scope 2 간접 온실가스 배출량 산정',
+                '외국인 근로자 신분증·여권 자가보관 준수',
+                '외국인 근로자 모국어 표준 근로계약서 교부',
+                '외국인 근로자 모국어 급여명세서 발급'
+            ];
+            
+            const icons = [
+                'fa-cloud-sun text-sky-600',
+                'fa-bolt text-amber-500',
+                'fa-passport text-blue-600',
+                'fa-signature text-purple-600',
+                'fa-file-invoice-dollar text-teal-600'
+            ];
+
+            currentStates.forEach((state, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-xl border transition shadow-sm hover:shadow-md flex flex-col justify-between gap-4 ";
+                
+                let badgeHTML = '';
+                let buttonHTML = '';
+
+                if (state === true) {
+                    card.className += "border-slate-200 border-t-4 border-t-rose-500";
+                    badgeHTML = `<span class="inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 text-xs font-bold px-2 py-0.5 rounded-full border border-rose-200">개선 필요</span>`;
+                    buttonHTML = `<button onclick="openModal(${idx + 1})" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-3 rounded-lg text-xs transition inline-flex items-center justify-center gap-1">지침 및 이행 가이드확인 <i class="fa-solid fa-arrow-right-to-bracket"></i></button>`;
+                } else {
+                    card.className += "border-slate-200 opacity-80 border-t-4 border-t-sky-500 bg-slate-50/50";
+                    badgeHTML = `<span class="inline-flex items-center gap-1.5 bg-sky-50 text-sky-700 text-xs font-bold px-2 py-0.5 rounded-full border border-sky-200">적합 양호</span>`;
+                    buttonHTML = `<button onclick="openModal(${idx + 1})" class="w-full bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 px-3 rounded-lg text-xs transition border inline-flex items-center justify-center gap-1">가이드라인 조회 <i class="fa-solid fa-book"></i></button>`;
+                }
+
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-black text-slate-400 tracking-wider">TASK 0${idx+1}</span>
+                            ${badgeHTML}
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="bg-slate-50 w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-slate-100 text-lg">
+                                <i class="fa-solid ${icons[idx]}"></i>
+                            </span>
+                            <h4 class="text-sm font-bold text-slate-900 leading-snug">${taskNames[idx]}</h4>
+                        </div>
+                    </div>
+                    <div>${buttonHTML}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openModal(taskNumber) {
+            selectedTaskIdx = taskNumber - 1;
+            const data = taskDetails[taskNumber];
+
+            document.getElementById('modal-task-badge').innerText = `TASK 0${taskNumber}`;
+            document.getElementById('modal-task-title').innerText = data.title;
+            document.getElementById('modal-global-guide').innerText = data.guide;
+            document.getElementById('modal-bg-text').innerText = data.bg;
+
+            // 제출 서류 영역 업데이트
+            const submitElem = document.getElementById('modal-submit-file-text');
+            if (submitElem && data.submitFile) {
+                submitElem.innerText = data.submitFile;
+            }
+
+            const actionContainer = document.getElementById('modal-action-items');
+            actionContainer.innerHTML = '';
+            data.actions.forEach((act, idx) => {
+                const item = document.createElement('div');
+                item.className = "flex items-start gap-2.5 py-1";
+                item.innerHTML = `
+                    <span class="bg-sky-100 text-sky-800 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5">${idx+1}</span>
+                    <p class="text-xs text-slate-700 leading-normal">${act}</p>
+                `;
+                actionContainer.appendChild(item);
+            });
+
+            const downloadWrapper = document.getElementById('modal-download-wrapper');
+            const downloadHeader = document.getElementById('modal-download-header');
+            const downloadFilename = document.getElementById('modal-download-filename');
+            const downloadBtnText = document.getElementById('modal-download-btn-text');
+            const downloadIcon = document.getElementById('modal-download-icon');
+
+            // 과제별 다운로드 및 외부 연동 레이아웃 제어
+            if (taskNumber === 1 || taskNumber === 2) {
+                downloadWrapper.classList.remove('hidden');
+                downloadHeader.innerText = "자가진단 도구 다운로드";
+                downloadFilename.innerText = "SME_SupplyChain_Carbon_Monthly_v4.xlsx";
+                downloadBtnText.innerText = "자가진단기 내려받기";
+                downloadIcon.className = "fa-solid fa-cloud-arrow-down";
+            } else if (taskNumber === 3) {
+                downloadWrapper.classList.remove('hidden');
+                downloadHeader.innerText = "자가진단 서식 및 양식 다운로드";
+                downloadFilename.innerText = "외국인 근로자 신분증 자가보관 확인서 양식 (다국어)";
+                downloadBtnText.innerText = "확인서 양식 내려받기";
+                downloadIcon.className = "fa-solid fa-file-signature";
+            } else if (taskNumber === 5) {
+                downloadWrapper.classList.remove('hidden');
+                downloadHeader.innerText = "다국어 명세서 웹 생성기";
+                downloadFilename.innerText = "외국인 다국어 급여명세서 전용 시스템";
+                downloadBtnText.innerText = "외국인 다국어 급여 명세서 생성기";
+                downloadIcon.className = "fa-solid fa-arrow-up-right-from-square";
+            } else {
+                // TASK 4는 다운로드 영역 완전 숨김
+                downloadWrapper.classList.add('hidden');
+            }
+
+            document.getElementById('guide-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('guide-modal').classList.add('hidden');
+            selectedTaskIdx = null;
+        }
+
+        function downloadMock() {
+            const taskNum = selectedTaskIdx + 1;
+            if (taskNum === 1 || taskNum === 2) {
+                window.open("https://drive.google.com/drive/folders/1cZdnFjVVQFtswV5tfn58zfiAJxNzyzxT?usp=drive_link", "_blank");
+                showToast('구글 드라이브 연결', `월별 탄소배출량 자가진단기 공유 폴더로 이동합니다.`, true);
+            } else if (taskNum === 3) {
+                window.open("https://a-self-storage-confirmation.vercel.app/", "_blank");
+                showToast('양식 열기', `외국인 근로자 신분증 자가보관 확인서 양식 시스템으로 이동합니다.`, true);
+            } else if (taskNum === 5) {
+                window.open("https://supply-chain-improvement-challenges.vercel.app/", "_blank");
+                showToast('생성기 연결', `외국인 다국어 급여 명세서 생성기 시스템으로 이동합니다.`, true);
+            }
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = '';
+
+            dbRecords.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition border-b border-slate-200/80";
+                const supplierState = taskMemoryState[item.id] || item.t;
+
+                let colsHTML = `
+                    <td class="p-3 border-r text-center text-slate-400 font-bold">${idx + 1}</td>
+                    <td class="p-3 border-r font-extrabold text-slate-900 cursor-pointer hover:text-sky-600 hover:underline" onclick="loadFromAdmin('${item.brn}', '${item.code}')">${item.name}</td>
+                    <td class="p-3 border-r text-slate-500 font-medium">${item.brn}</td>
+                    <td class="p-3 border-r text-center text-slate-600 font-bold">${item.code}</td>
+                    <td class="p-3 border-r text-center font-black text-sky-700">${item.grade}등급 (${item.score}점)</td>
+                `;
+
+                supplierState.forEach(state => {
+                    if (state === true) {
+                        colsHTML += `<td class="p-2 border-r text-center"><span class="bg-rose-50 text-rose-600 font-bold text-[10px] px-2 py-0.5 rounded">대상</span></td>`;
+                    } else {
+                        colsHTML += `<td class="p-2 border-r text-center"><span class="bg-slate-100 text-slate-400 font-bold text-[10px] px-2 py-0.5 rounded">완료</span></td>`;
+                    }
+                });
+
+                tr.innerHTML = colsHTML;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function loadFromAdmin(brn, code) {
+            switchTab('search');
+            fillSample(brn.replace(/[-\s]/g, ''), code);
+        }
+
+        function searchAdminTable() {
+            const q = document.getElementById('admin-search-input').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#admin-table-body tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length > 2) {
+                    if (cells[1].innerText.toLowerCase().includes(q) || cells[3].innerText.toLowerCase().includes(q)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        window.onload = () => {
+            renderAdminTabState();
+        };
+    </script>
+</body>
+</html>
