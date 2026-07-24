@@ -848,35 +848,31 @@
             const rawBrn = document.getElementById('search-brn').value.trim().replace(/[-\s]/g, '');
             const rawCode = document.getElementById('search-code').value.trim().replace(/[-\s]/g, '');
 
-            if (!rawBrn && !rawCode) {
-                showToast('입력 누락', '보안 조회를 위해 기업명, 사업자번호 또는 업체코드를 입력해 주십시오.', false);
+            // 이중 보안 조회를 위해 두 항목 모두 입력 필수
+            if (!rawBrn || !rawCode) {
+                showToast('입력 누락', '이중 교차 보안 조회를 위해 사업자번호(기업명)와 업체코드를 모두 입력해 주십시오.', false);
                 return;
             }
 
-            // 기업명, 사업자번호, 업체코드 다각도 유연 스마트 매칭 (비렉스텍/비렉스테크 등 오타 및 유사어 완화)
+            const qBrn = rawBrn.toLowerCase().replace(/[\s\(\)주]/g, '');
+            const qCode = rawCode.toLowerCase().replace(/[\s\(\)주]/g, '');
+
+            // 사업자등록번호(기업명)와 업체코드가 동일한 1개 기업에 '동시에' 교차 일치해야 조회 승인
             const match = dbRecords.find(item => {
                 const cleanBrn = item.brn.replace(/[-\s]/g, '');
                 const cleanCode = item.code.replace(/[-\s]/g, '');
                 const cleanName = item.name.replace(/[\s\(\)주]/g, '').toLowerCase();
 
-                const qBrn = rawBrn.toLowerCase().replace(/[\s\(\)주]/g, '');
-                const qCode = rawCode.toLowerCase().replace(/[\s\(\)주]/g, '');
+                // 1. 업체코드가 일치하는지 확인
+                const isCodeMatch = (cleanCode === qCode);
 
-                if (rawBrn && rawCode) {
-                    return (cleanBrn === rawBrn && cleanCode === rawCode) ||
-                           (cleanName.includes(qBrn) && cleanCode === rawCode) ||
-                           (cleanName.includes(qBrn) || cleanBrn === rawBrn);
-                }
-                
-                if (rawBrn) {
-                    return cleanBrn === rawBrn || cleanCode === rawBrn || cleanName.includes(qBrn) || qBrn.includes(cleanName.substring(0, 3));
-                }
+                // 2. 사업자등록번호 또는 기업명이 일치하는지 확인
+                const isBrnOrNameMatch = (cleanBrn === qBrn) || 
+                                         (cleanName === qBrn) || 
+                                         (qBrn.length >= 2 && cleanName.includes(qBrn));
 
-                if (rawCode) {
-                    return cleanBrn === rawCode || cleanCode === rawCode || cleanName.includes(qCode);
-                }
-
-                return false;
+                // 두 조건이 모두 동시에 참(TRUE)이어야 함
+                return isCodeMatch && isBrnOrNameMatch;
             });
 
             const emptyState = document.getElementById('results-empty-state');
@@ -889,12 +885,12 @@
                     <div class="bg-red-50 text-red-500 w-16 h-16 rounded-full flex items-center justify-center text-2xl mb-4 border border-red-200">
                         <i class="fa-solid fa-shield-exclamation"></i>
                     </div>
-                    <h3 class="text-md font-bold text-red-600">조회 결과 없음</h3>
+                    <h3 class="text-md font-bold text-red-600">이중 보안 인증 실패</h3>
                     <p class="text-xs text-slate-500 mt-2 max-w-sm leading-relaxed">
-                        입력하신 정보와 일치하는 협력사 데이터를 찾지 못했습니다. <br>기업명, 사업자번호 또는 업체코드를 다시 확인해 주십시오.
+                        입력하신 사업자등록번호(기업명)와 업체코드가 상호 일치하지 않습니다.<br>타사 정보 접근 방지를 위해 올바른 조합을 입력해 주십시오.
                     </p>
                 `;
-                showToast('조회 실패', '입력하신 교차 보안코드가 일치하지 않습니다.', false);
+                showToast('조회 실패', '사업자번호와 업체코드가 교차 일치하지 않습니다.', false);
                 return;
             }
 
