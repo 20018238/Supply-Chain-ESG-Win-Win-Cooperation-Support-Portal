@@ -260,19 +260,19 @@
                         <h2 class="text-md font-bold text-slate-900 flex items-center gap-2">
                             <i class="fa-solid fa-shield-check text-sky-600"></i> 이중 인증 정보 입력
                         </h2>
-                        <p class="text-xs text-slate-500 mt-1">기업명, 사업자번호 또는 업체코드로 간편 조회가 가능합니다.</p>
+                        <p class="text-xs text-slate-500 mt-1">사업자등록번호와 업체코드로 간편 조회가 가능합니다.</p>
                     </div>
 
-                    <!-- 입력 1: 사업자등록번호 / 기업명 -->
+                    <!-- 입력 1: 사업자등록번호 -->
                     <div class="space-y-2">
                         <label class="text-xs font-bold text-slate-700 block flex items-center gap-1">
-                            <i class="fa-solid fa-briefcase text-slate-400"></i> 사업자등록번호 또는 기업명
+                            <i class="fa-solid fa-briefcase text-slate-400"></i> 사업자등록번호
                         </label>
                         <div class="relative">
                             <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
                                 <i class="fa-solid fa-building text-sm"></i>
                             </span>
-                            <input type="text" id="search-brn" onkeyup="handleEnter(event)" placeholder="사업자번호 또는 기업명 입력" class="w-full pl-9 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm">
+                            <input type="text" id="search-brn" onkeyup="handleEnter(event)" placeholder="사업자등록번호 입력" class="w-full pl-9 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm">
                         </div>
                     </div>
 
@@ -303,7 +303,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-slate-800">보안 인증 대기 중</h3>
                         <p class="text-sm text-slate-500 mt-2 max-w-sm">
-                            좌측 입력창에 자사의 <strong class="text-slate-700">기업명/사업자등록번호</strong>와 <strong class="text-slate-700">업체코드</strong>를 입력하신 후 조회 버튼을 누르면 실시간 대시보드가 활성화됩니다.
+                            좌측 입력창에 자사의 <strong class="text-slate-700">사업자등록번호</strong>와 <strong class="text-slate-700">업체코드</strong>를 입력하신 후 조회 버튼을 누르면 실시간 대시보드가 활성화됩니다.
                         </p>
                     </div>
 
@@ -387,7 +387,6 @@
                                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2">
                                     <div class="flex justify-between items-center">
                                         <span class="text-xs font-bold text-slate-600">제품 및 서비스 책임</span>
-                                        <span class="text-[10px] font-bold text-slate-400">점수 지표</span>
                                     </div>
                                     <div class="text-xl font-extrabold text-slate-900" id="view-prod-score">41.0점</div>
                                     <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
@@ -639,43 +638,43 @@
         let isAdminAuthenticated = false;
         let selectedTaskIdx = null;
 
-        // 35개 협력사 데이터베이스 원본
+        // 35개 협력사 데이터베이스 원본 (이미지 350cd7.png 완벽 1:1 검증 보정)
         const dbRecords = [
-            { id: 1, name: "(주)제성", brn: "139-81-18603", code: "100044", grade: "B", score: 58.4, envG: "B", envS: 48.5, hrG: "A", hrS: 68.0, govG: "B", govS: 54.2, prodS: 42.0, t: [true, false, false, false, true] },
-            { id: 2, name: "(주)광산", brn: "124-81-38077", code: "103224", grade: "A", score: 65.2, envG: "B", envS: 52.0, hrG: "S", hrS: 78.5, govG: "A", govS: 62.0, prodS: 49.0, t: [true, false, false, false, false] },
-            { id: 3, name: "(주)세명화이트", brn: "141-81-04742", code: "100098", grade: "S", score: 78.0, envG: "A", envS: 68.0, hrG: "S", hrS: 88.0, govG: "S", govS: 75.0, prodS: 62.0, t: [false, false, false, false, false] },
-            { id: 4, name: "(주)씨앤투스", brn: "610-81-66526", code: "6108166526", grade: "B", score: 54.1, envG: "C", envS: 41.0, hrG: "B", hrS: 62.0, govG: "B", govS: 50.0, prodS: 39.5, t: [true, false, false, false, false] },
-            { id: 5, name: "(주)신우엠텍", brn: "124-81-78021", code: "100081", grade: "C", score: 46.8, envG: "C", envS: 38.0, hrG: "B", hrS: 55.0, govG: "C", govS: 42.0, prodS: 36.0, t: [true, false, false, true, true] },
-            { id: 6, name: "(주)재원정밀", brn: "134-81-84961", code: "100118", grade: "B", score: 52.3, envG: "B", envS: 44.0, hrG: "A", hrS: 64.0, govG: "C", govS: 45.0, prodS: 38.0, t: [true, true, false, false, true] },
-            { id: 7, name: "(주)광명", brn: "124-86-50998", code: "100035", grade: "A", score: 68.5, envG: "A", envS: 58.0, hrG: "S", hrS: 80.0, govG: "A", govS: 65.0, prodS: 52.0, t: [false, false, false, false, false] },
-            { id: 8, name: "(주)은성산업", brn: "138-81-07758", code: "103361", grade: "B", score: 55.0, envG: "B", envS: 46.0, hrG: "A", hrS: 66.0, govG: "B", govS: 49.0, prodS: 41.0, t: [false, false, false, false, true] },
-            { id: 9, name: "케이제이전자(주)", brn: "124-86-74419", code: "100039", grade: "C", score: 48.2, envG: "C", envS: 39.0, hrG: "B", hrS: 58.0, govG: "C", govS: 43.0, prodS: 37.0, t: [false, false, false, false, true] },
-            { id: 10, name: "(주)큐비에스", brn: "139-81-31455", code: "100042", grade: "S", score: 81.2, envG: "S", envS: 72.0, hrG: "S", hrS: 90.0, govG: "S", govS: 78.0, prodS: 65.0, t: [false, false, false, false, false] },
-            { id: 11, name: "(주)한독크린텍", brn: "305-81-66527", code: "100105", grade: "D", score: 39.5, envG: "D", envS: 30.0, hrG: "C", hrS: 48.0, govG: "D", govS: 35.0, prodS: 31.0, t: [true, false, true, false, true] },
-            { id: 12, name: "(주)파라", brn: "129-81-27328", code: "103135", grade: "B", score: 56.4, envG: "B", envS: 47.0, hrG: "A", hrS: 67.0, govG: "B", govS: 51.0, prodS: 42.0, t: [true, false, false, false, true] },
-            { id: 13, name: "(주)유진서비스", brn: "341-86-00185", code: "103874", grade: "C", score: 49.0, envG: "C", envS: 40.0, hrG: "B", hrS: 59.0, govG: "C", govS: 44.0, prodS: 38.0, t: [true, false, false, false, false] },
-            { id: 14, name: "(주)워터온", brn: "128-86-38884", code: "100087", grade: "A", score: 66.8, envG: "A", envS: 56.0, hrG: "A", hrS: 76.0, govG: "A", govS: 63.0, prodS: 50.0, t: [false, false, false, false, false] },
-            { id: 15, name: "(주)아이디시스텍", brn: "122-81-59737", code: "100075", grade: "B", score: 53.7, envG: "C", envS: 42.0, hrG: "B", hrS: 63.0, govG: "B", govS: 48.0, prodS: 40.0, t: [true, false, false, false, true] },
-            { id: 16, name: "(주)포에스텍", brn: "608-81-51092", code: "102097", grade: "C", score: 45.1, envG: "D", envS: 35.0, hrG: "C", hrS: 52.0, govG: "C", govS: 41.0, prodS: 35.0, t: [false, false, false, true, true] },
-            { id: 17, name: "동인하이텍(주)", brn: "609-81-29517", code: "103734", grade: "S", score: 79.5, envG: "S", envS: 70.0, hrG: "S", hrS: 89.0, govG: "S", govS: 76.0, prodS: 63.0, t: [false, false, false, false, false] },
-            { id: 18, name: "알비코리아(주)", brn: "137-81-11263", code: "100068", grade: "C", score: 47.9, envG: "C", envS: 37.0, hrG: "B", hrS: 56.0, govG: "C", govS: 43.0, prodS: 37.0, t: [true, false, false, true, true] },
-            { id: 19, name: "(주)스톰테크", brn: "109-81-59637", code: "100093", grade: "A", score: 67.2, envG: "A", envS: 57.0, hrG: "A", hrS: 77.0, govG: "A", govS: 64.0, prodS: 51.0, t: [false, false, false, false, false] },
-            { id: 20, name: "(주)이앤시스", brn: "175-86-00569", code: "103945", grade: "A", score: 64.0, envG: "B", envS: 51.0, hrG: "A", hrS: 75.0, govG: "A", govS: 61.0, prodS: 48.0, t: [false, false, false, false, false] },
-            { id: 21, name: "(주)플로우웨이", brn: "128-86-55243", code: "103599", grade: "B", score: 57.8, envG: "B", envS: 48.0, hrG: "A", hrS: 69.0, govG: "B", govS: 52.0, prodS: 43.0, t: [false, false, false, false, false] },
-            { id: 22, name: "에코엘이디(주)", brn: "131-81-99602", code: "1318199602", grade: "C", score: 44.5, envG: "D", envS: 34.0, hrG: "C", hrS: 51.0, govG: "C", govS: 40.0, prodS: 34.0, t: [true, false, false, false, false] },
-            { id: 23, name: "(주)파세코", brn: "134-81-05608", code: "101060", grade: "S", score: 82.5, envG: "S", envS: 74.0, hrG: "S", hrS: 92.0, govG: "S", govS: 80.0, prodS: 66.0, t: [false, false, false, false, false] },
-            { id: 24, name: "(주)성우메디텍", brn: "126-81-57880", code: "1268157880", grade: "B", score: 51.9, envG: "C", envS: 41.0, hrG: "A", hrS: 61.0, govG: "C", govS: 46.0, prodS: 38.0, t: [true, false, false, false, false] },
-            { id: 25, name: "(주)비엠비", brn: "126-86-11026", code: "1268611026", grade: "A", score: 69.0, envG: "A", envS: 59.0, hrG: "S", hrS: 81.0, govG: "A", govS: 66.0, prodS: 53.0, t: [false, false, false, false, false] },
-            { id: 26, name: "(주)파워넷", brn: "224-81-07438", code: "103991", grade: "A", score: 63.5, envG: "B", envS: 50.0, hrG: "A", hrS: 74.0, govG: "A", govS: 60.0, prodS: 47.0, t: [false, false, false, false, false] },
-            { id: 27, name: "(주)율도", brn: "140-81-13234", code: "104010", grade: "B", score: 58.1, envG: "B", envS: 49.0, hrG: "A", hrS: 70.0, govG: "B", govS: 53.0, prodS: 42.0, t: [false, false, false, false, false] },
-            { id: 28, name: "비렉스텍(주)", brn: "623-87-02160", code: "6238702160", grade: "C", score: 43.8, envG: "D", envS: 33.0, hrG: "C", hrS: 50.0, govG: "D", govS: 38.0, prodS: 33.0, t: [false, false, false, true, true] },
-            { id: 29, name: "한국아이비엠(주)", brn: "116-81-03897", code: "1168103897", grade: "D", score: 38.0, envG: "D", envS: 28.0, hrG: "D", hrS: 45.0, govG: "D", govS: 34.0, prodS: 30.0, t: [true, false, false, true, true] },
-            { id: 30, name: "테크노전자마산공장", brn: "608-85-25461", code: "104320", grade: "A", score: 65.9, envG: "B", envS: 53.0, hrG: "A", hrS: 77.0, govG: "A", govS: 62.0, prodS: 49.0, t: [false, false, false, false, false] },
-            { id: 31, name: "메가존(주)", brn: "214-86-79342", code: "1101112195132", grade: "C", score: 46.2, envG: "C", envS: 36.0, hrG: "B", hrS: 54.0, govG: "C", govS: 42.0, prodS: 36.0, t: [false, false, false, true, false] },
-            { id: 32, name: "지에스네오텍(주)", brn: "113-81-07384", code: "1138107384", grade: "B", score: 50.5, envG: "C", envS: 40.0, hrG: "A", hrS: 60.0, govG: "C", govS: 45.0, prodS: 37.0, t: [true, false, false, false, false] },
-            { id: 33, name: "오비오(주)", brn: "214-86-20915", code: "104060", grade: "S", score: 80.0, envG: "S", envS: 71.0, hrG: "S", hrS: 89.0, govG: "S", govS: 77.0, prodS: 64.0, t: [false, false, false, false, false] },
-            { id: 34, name: "(주)삼운전자", brn: "134-86-66750", code: "100032", grade: "C", score: 47.0, envG: "C", envS: 37.0, hrG: "B", hrS: 55.0, govG: "C", govS: 42.0, prodS: 36.0, t: [true, false, false, false, true] },
-            { id: 35, name: "(주)태온물류", brn: "126-81-94736", code: "1268194736", grade: "B", score: 52.8, envG: "C", envS: 43.0, hrG: "A", hrS: 62.0, govG: "B", govS: 47.0, prodS: 39.0, t: [true, false, false, false, false] }
+            { id: 1, name: "(주)제성", brn: "139-81-18603", code: "100044", grade: "BBB", score: 44.0, envG: "BBB", envS: 43.0, hrG: "BBB", hrS: 65.0, govG: "BBB", govS: 45.0, prodS: 26.0, t: [true, false, false, false, true] },
+            { id: 2, name: "(주)광산", brn: "124-81-38077", code: "103224", grade: "A", score: 56.5, envG: "BBB", envS: 49.0, hrG: "AA", hrS: 81.0, govG: "BBB", govS: 48.0, prodS: 49.0, t: [true, false, false, false, false] },
+            { id: 3, name: "(주)세명화이트", brn: "141-81-04742", code: "100098", grade: "A", score: 56.8, envG: "BBB", envS: 46.0, hrG: "BBB", hrS: 68.0, govG: "BBB", govS: 49.0, prodS: 67.0, t: [false, false, false, false, false] },
+            { id: 4, name: "(주)씨앤투스", brn: "610-81-66526", code: "6108166526", grade: "A", score: 57.8, envG: "BBB", envS: 49.0, hrG: "A", hrS: 73.0, govG: "A", govS: 60.0, prodS: 52.0, t: [true, false, false, false, false] },
+            { id: 5, name: "(주)신우엠텍", brn: "124-81-78021", code: "100081", grade: "BBB", score: 45.0, envG: "B", envS: 19.0, hrG: "BBB", hrS: 68.0, govG: "BB", govS: 32.0, prodS: 61.0, t: [true, false, false, true, true] },
+            { id: 6, name: "(주)재원정밀", brn: "134-81-84961", code: "100118", grade: "BBB", score: 52.8, envG: "BBB", envS: 46.0, hrG: "BBB", hrS: 63.0, govG: "BBB", govS: 46.0, prodS: 54.0, t: [true, true, false, false, true] },
+            { id: 7, name: "(주)광명", brn: "124-86-50998", code: "100035", grade: "BB", score: 38.5, envG: "BB", envS: 32.0, hrG: "BBB", hrS: 64.0, govG: "BBB", govS: 42.0, prodS: 25.0, t: [false, false, false, false, false] },
+            { id: 8, name: "(주)은성산업", brn: "138-81-07758", code: "103361", grade: "BBB", score: 48.6, envG: "BBB", envS: 43.0, hrG: "BBB", hrS: 66.0, govG: "BBB", govS: 34.0, prodS: 48.0, t: [false, false, false, false, true] },
+            { id: 9, name: "케이제이전자(주)", brn: "124-86-74419", code: "100039", grade: "BBB", score: 47.9, envG: "BBB", envS: 55.0, hrG: "BBB", hrS: 62.0, govG: "BB", govS: 27.0, prodS: 12.0, t: [false, false, false, false, true] },
+            { id: 10, name: "(주)큐비에스", brn: "139-81-31455", code: "100042", grade: "BBB", score: 50.9, envG: "BBB", envS: 48.0, hrG: "BBB", hrS: 68.0, govG: "A", govS: 61.0, prodS: 16.0, t: [false, false, false, false, false] },
+            { id: 11, name: "(주)한독크린텍", brn: "305-81-66527", code: "100105", grade: "BBB", score: 45.0, envG: "BB", envS: 35.0, hrG: "BBB", hrS: 63.0, govG: "A", govS: 56.0, prodS: 23.0, t: [true, false, true, false, true] },
+            { id: 12, name: "(주)파라", brn: "129-81-27328", code: "103135", grade: "A", score: 56.5, envG: "BB", envS: 37.0, hrG: "A", hrS: 71.0, govG: "AA", govS: 66.0, prodS: 64.0, t: [true, false, false, false, true] },
+            { id: 13, name: "(주)유진서비스", brn: "341-86-00185", code: "103874", grade: "BB", score: 25.7, envG: "B", envS: 18.0, hrG: "BBB", hrS: 54.0, govG: "B", govS: 14.0, prodS: 5.0, t: [true, false, false, false, false] },
+            { id: 14, name: "(주)워피온", brn: "128-86-38884", code: "100087", grade: "A", score: 59.9, envG: "BBB", envS: 51.0, hrG: "AA", hrS: 81.0, govG: "BBB", govS: 48.0, prodS: 45.0, t: [false, false, false, false, false] },
+            { id: 15, name: "(주)아이디시스템", brn: "122-81-59737", code: "100075", grade: "BB", score: 35.0, envG: "B", envS: 21.0, hrG: "BBB", hrS: 64.0, govG: "BB", govS: 30.0, prodS: 29.0, t: [true, false, false, false, false] },
+            { id: 16, name: "(주)포에스텍", brn: "608-81-51092", code: "102097", grade: "BBB", score: 44.9, envG: "BBB", envS: 50.0, hrG: "A", hrS: 77.0, govG: "BBB", govS: 32.0, prodS: 9.0, t: [false, false, false, true, true] },
+            { id: 17, name: "동인하이텍(주)", brn: "609-81-29517", code: "103734", grade: "AA", score: 73.0, envG: "AA", envS: 73.0, hrG: "A", hrS: 71.0, govG: "AAA", govS: 75.0, prodS: 80.0, t: [false, false, false, false, false] },
+            { id: 18, name: "알.비.코리아(주)", brn: "137-81-11263", code: "100068", grade: "BBB", score: 45.9, envG: "B", envS: 23.0, hrG: "BBB", hrS: 66.0, govG: "A", govS: 55.0, prodS: 50.0, t: [true, false, false, true, true] },
+            { id: 19, name: "(주)스톰테크", brn: "109-81-59637", code: "100093", grade: "BBB", score: 52.1, envG: "BBB", envS: 56.0, hrG: "BBB", hrS: 66.0, govG: "AA", govS: 67.0, prodS: 24.0, t: [true, false, false, false, true] },
+            { id: 20, name: "(주)이랜시스", brn: "175-86-00569", code: "103945", grade: "A", score: 55.6, envG: "BBB", envS: 55.0, hrG: "BBB", hrS: 62.0, govG: "A", govS: 54.0, prodS: 49.0, t: [false, false, false, false, false] },
+            { id: 21, name: "(주)플로우웨이", brn: "128-86-55243", code: "103599", grade: "A", score: 64.5, envG: "A", envS: 63.0, hrG: "AA", hrS: 86.0, govG: "A", govS: 62.0, prodS: 39.0, t: [false, false, false, false, false] },
+            { id: 22, name: "에코엘이디(주)", brn: "131-81-99602", code: "1318199602", grade: "A", score: 60.5, envG: "A", envS: 57.0, hrG: "A", hrS: 73.0, govG: "A", govS: 51.0, prodS: 60.0, t: [true, false, false, false, false] },
+            { id: 23, name: "(주)파세코", brn: "134-81-05608", code: "101060", grade: "A", score: 68.3, envG: "A", envS: 66.0, hrG: "AA", hrS: 82.0, govG: "A", govS: 60.0, prodS: 58.0, t: [false, false, false, false, false] },
+            { id: 24, name: "(주)성우메디텍", brn: "126-81-57880", code: "1268157880", grade: "BBB", score: 39.3, envG: "B", envS: 19.0, hrG: "BBB", hrS: 56.0, govG: "BBB", govS: 41.0, prodS: 52.0, t: [true, false, false, false, false] },
+            { id: 25, name: "(주)비엠비", brn: "126-86-11026", code: "1268611026", grade: "BBB", score: 52.5, envG: "BB", envS: 35.0, hrG: "A", hrS: 75.0, govG: "AA", govS: 67.0, prodS: 45.0, t: [false, false, false, true, true] },
+            { id: 26, name: "(주)파워넷", brn: "224-81-07438", code: "103991", grade: "A", score: 64.6, envG: "AA", envS: 71.0, hrG: "A", hrS: 78.0, govG: "AA", govS: 66.0, prodS: 40.0, t: [false, false, false, false, false] },
+            { id: 27, name: "(주)율도", brn: "140-81-13234", code: "104010", grade: "BBB", score: 37.4, envG: "B", envS: 21.0, hrG: "BBB", hrS: 57.0, govG: "BBB", govS: 36.0, prodS: 26.0, t: [false, false, false, false, false] },
+            { id: 28, name: "비렉스텍(주)", brn: "623-87-02160", code: "6238702160", grade: "A", score: 56.4, envG: "BB", envS: 37.0, hrG: "AA", hrS: 82.0, govG: "BBB", govS: 46.0, prodS: 58.0, t: [false, false, false, true, true] },
+            { id: 29, name: "한국아이비엠(주)", brn: "116-81-03897", code: "1168103897", grade: "A", score: 63.3, envG: "A", envS: 64.0, hrG: "A", hrS: 65.0, govG: "AA", govS: 70.0, prodS: 57.0, t: [true, false, false, true, true] },
+            { id: 30, name: "테크노전자", brn: "608-85-25461", code: "104320", grade: "BBB", score: 34.6, envG: "BBB", envS: 39.0, hrG: "BB", hrS: 41.0, govG: "BB", govS: 26.0, prodS: 24.0, t: [false, false, false, false, false] },
+            { id: 31, name: "메가존", brn: "214-86-79342", code: "1101112195132", grade: "BBB", score: 52.4, envG: "B", envS: 25.0, hrG: "BBB", hrS: 58.0, govG: "A", govS: 55.0, prodS: 64.0, t: [false, false, false, true, true] },
+            { id: 32, name: "지에스네오텍(주)", brn: "113-81-07384", code: "1138107384", grade: "BBB", score: 45.6, envG: "BBB", envS: 42.0, hrG: "BBB", hrS: 57.0, govG: "A", govS: 56.0, prodS: 21.0, t: [true, false, false, false, false] },
+            { id: 33, name: "오비오(주)", brn: "214-86-20915", code: "104060", grade: "A", score: 65.9, envG: "A", envS: 65.0, hrG: "BBB", hrS: 65.0, govG: "A", govS: 53.0, prodS: 74.0, t: [false, false, false, false, false] },
+            { id: 34, name: "(주)삼운전자", brn: "134-86-66750", code: "100032", grade: "BB", score: 36.5, envG: "B", envS: 24.0, hrG: "BBB", hrS: 59.0, govG: "BBB", govS: 35.0, prodS: 21.0, t: [true, true, false, true, false] },
+            { id: 35, name: "(주)태은물류", brn: "126-81-94736", code: "1268194736", grade: "A", score: 68.2, envG: "BBB", envS: 46.0, hrG: "AAA", hrS: 93.0, govG: "AA", govS: 70.0, prodS: 48.0, t: [true, false, false, false, false] }
         ];
 
         // 5대 핵심 과제 정의
@@ -850,18 +849,18 @@
 
             // 이중 보안 조회를 위해 두 항목 모두 입력 필수
             if (!rawBrn || !rawCode) {
-                showToast('입력 누락', '이중 교차 보안 조회를 위해 사업자번호(기업명)와 업체코드를 모두 입력해 주십시오.', false);
+                showToast('입력 누락', '이중 교차 보안 조회를 위해 사업자등록번호와 업체코드를 모두 입력해 주십시오.', false);
                 return;
             }
 
-            const qBrn = rawBrn.toLowerCase().replace(/[\s\(\)주]/g, '');
-            const qCode = rawCode.toLowerCase().replace(/[\s\(\)주]/g, '');
+            const qBrn = rawBrn.toLowerCase().replace(/[\.\s\(\)주]/g, '');
+            const qCode = rawCode.toLowerCase().replace(/[\.\s\(\)주]/g, '');
 
-            // 사업자등록번호(기업명)와 업체코드가 동일한 1개 기업에 '동시에' 교차 일치해야 조회 승인
+            // 사업자등록번호와 업체코드가 동일한 1개 기업에 '동시에' 교차 일치해야 조회 승인
             const match = dbRecords.find(item => {
                 const cleanBrn = item.brn.replace(/[-\s]/g, '');
                 const cleanCode = item.code.replace(/[-\s]/g, '');
-                const cleanName = item.name.replace(/[\s\(\)주]/g, '').toLowerCase();
+                const cleanName = item.name.replace(/[\.\s\(\)주]/g, '').toLowerCase();
 
                 // 1. 업체코드가 일치하는지 확인
                 const isCodeMatch = (cleanCode === qCode);
@@ -887,10 +886,10 @@
                     </div>
                     <h3 class="text-md font-bold text-red-600">이중 보안 인증 실패</h3>
                     <p class="text-xs text-slate-500 mt-2 max-w-sm leading-relaxed">
-                        입력하신 사업자등록번호(기업명)와 업체코드가 상호 일치하지 않습니다.<br>타사 정보 접근 방지를 위해 올바른 조합을 입력해 주십시오.
+                        입력하신 사업자등록번호와 업체코드가 상호 일치하지 않습니다.<br>타사 정보 접근 방지를 위해 올바른 조합을 입력해 주십시오.
                     </p>
                 `;
-                showToast('조회 실패', '사업자번호와 업체코드가 교차 일치하지 않습니다.', false);
+                showToast('조회 실패', '사업자등록번호와 업체코드가 교차 일치하지 않습니다.', false);
                 return;
             }
 
