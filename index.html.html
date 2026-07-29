@@ -44,10 +44,13 @@
                         <span class="text-xs text-sky-400 font-medium">공급망 ESG 상생협력 보안 조회 포털</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
-                    <span class="bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded-full border border-slate-700 inline-block">
+                <div class="flex items-center gap-3">
+                    <span class="hidden sm:inline-flex bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded-full border border-slate-700 items-center">
                         <i class="fa-solid fa-lock text-sky-400 mr-1.5 text-[10px]"></i> 이중 교차 인증 보안 활성화
                     </span>
+                    <button onclick="openManualModal()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition shadow flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-book-open"></i> 사이트 사용 매뉴얼
+                    </button>
                 </div>
             </div>
         </div>
@@ -493,6 +496,78 @@
         </div>
     </div>
 
+    <!-- 사이트 사용 매뉴얼 팝업 모달 -->
+    <div id="user-manual-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] shadow-2xl flex flex-col overflow-hidden border border-slate-100">
+            <div class="bg-slate-900 text-white p-5 flex justify-between items-center border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="bg-sky-600 p-2 rounded-lg text-white text-sm">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">사이트 이용 매뉴얼 안내</h3>
+                        <p class="text-xs text-sky-400">공급망 ESG 상생협력 포털 활용 가이드</p>
+                    </div>
+                </div>
+                <button onclick="closeManualModal()" class="text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 p-2 rounded-lg transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
+                <!-- STEP 1 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-start gap-3">
+                    <span class="bg-sky-600 text-white font-extrabold text-xs w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span>
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-slate-900">이중 보안 인증 정보 입력</h4>
+                        <p class="text-slate-600 leading-relaxed">
+                            좌측 입력 폼에 자사의 <strong class="text-slate-800">사업자등록번호</strong>와 <strong class="text-slate-800">업체코드</strong>를 동시에 올바르게 입력 후 <span class="text-sky-600 font-bold">'보안 인증 및 조회'</span> 버튼을 클릭합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-start gap-3">
+                    <span class="bg-sky-600 text-white font-extrabold text-xs w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span>
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-slate-900">ESG 종합 진단 결과 및 영역별 성과 확인</h4>
+                        <p class="text-slate-600 leading-relaxed">
+                            인증 성공 시 자사의 <strong class="text-slate-800">2025 ESG 종합 등급 및 평가 총점</strong>과 4대 세부 영역(환경, 인권·노동, 윤리·지배구조, 제품책임)별 진단 수치가 활성화됩니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-start gap-3">
+                    <span class="bg-sky-600 text-white font-extrabold text-xs w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span>
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-slate-900">5대 ESG 핵심 과제 상태 점검 및 가이드 조회</h4>
+                        <p class="text-slate-600 leading-relaxed">
+                            <span class="text-rose-600 font-bold">'개선 필요'</span> 항목의 <span class="text-rose-600 font-bold">'지침 및 이행 가이드 확인'</span> 버튼을 눌러 필수 제출 증빙 서류, Action Item 및 자가진단 서식을 다운로드할 수 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-start gap-3">
+                    <span class="bg-sky-600 text-white font-extrabold text-xs w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">4</span>
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-slate-900">이행 계획 수립 및 증빙 서류 최종 제출</h4>
+                        <p class="text-slate-600 leading-relaxed">
+                            대시보드 하단의 <strong class="text-slate-800">'구글설문지 바로가기'</strong> 버튼을 클릭하여 25-26년 개선과제 이행 계획 작성 및 증빙 서류 제출을 완료해 주시기 바랍니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-4 border-t border-slate-200 flex justify-end">
+                <button onclick="closeManualModal()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold px-5 py-2.5 rounded-lg transition">
+                    확인 및 닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="custom-toast" class="fixed top-5 right-5 z-[200] transform translate-x-[120%] transition-transform duration-300 max-w-sm w-full bg-slate-900 text-white p-4 rounded-xl shadow-2xl border border-slate-800 flex items-start gap-3">
         <span id="toast-icon-box" class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm">
             <i id="toast-icon" class="fa-solid"></i>
@@ -860,6 +935,14 @@
         function closeModal() {
             document.getElementById('guide-modal').classList.add('hidden');
             selectedTaskIdx = null;
+        }
+
+        function openManualModal() {
+            document.getElementById('user-manual-modal').classList.remove('hidden');
+        }
+
+        function closeManualModal() {
+            document.getElementById('user-manual-modal').classList.add('hidden');
         }
 
         function downloadMock() {
